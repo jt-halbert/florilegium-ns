@@ -1,0 +1,31 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "fl": "https://w3id.org/florilegium/ns#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "Activity": "prov:Activity",
+    "Entity": "prov:Entity",
+    "wasGeneratedBy": {"@id": "prov:wasGeneratedBy", "@type": "@id"},
+    "wasAttributedTo": {"@id": "prov:wasAttributedTo", "@type": "@id"},
+    "wasAssociatedWith": {"@id": "prov:wasAssociatedWith", "@type": "@id"},
+    "wasDerivedFrom": {"@id": "prov:wasDerivedFrom", "@type": "@id"},
+    "used": {"@id": "prov:used", "@type": "@id"},
+    "fl:lineage": {"@id": "fl:lineage", "@type": "@id"},
+    "fl:prev": {"@id": "fl:prev", "@type": "@id"},
+    "fl:place": {"@id": "fl:place", "@type": "@id"},
+    "fl:protocol": {"@id": "fl:protocol", "@type": "@id"},
+    "fl:issue": {"@id": "fl:issue", "@type": "@id"},
+    "fl:respondsTo": {"@id": "fl:respondsTo", "@type": "@id"},
+    "fl:subject": {"@id": "fl:subject", "@type": "@id"},
+    "fl:decider": {"@id": "fl:decider", "@type": "@id"},
+    "fl:head": {"@id": "fl:head", "@type": "@id"},
+    "fl:representation": {"@id": "fl:representation", "@type": "@id"},
+    "fl:members": {"@id": "fl:members", "@type": "@id"},
+    "fl:exceptions": {"@id": "fl:exceptions", "@container": "@list"},
+    "fl:nodes": {"@id": "fl:nodes", "@type": "@json"},
+    "fl:edges": {"@id": "fl:edges", "@type": "@json"},
+    "fl:unit": {"@id": "fl:unit", "@type": "@json"},
+    "fl:values": {"@id": "fl:values", "@type": "@json"}
+  }
+}
