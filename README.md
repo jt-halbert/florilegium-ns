@@ -19,3 +19,8 @@ can be pointed elsewhere later without changing any record.
 - The namespace IRI itself never changes and carries no version.
 
 Maintainer: J.T. Halbert ([jt-halbert](https://github.com/jt-halbert)).
+
+## License
+
+The files in this repository are dedicated to the public domain under [CC0 1.0](LICENSE), so anyone may copy, serve
+or reuse the namespace page and the context.
