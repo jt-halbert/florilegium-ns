@@ -1,0 +1,221 @@
+# Florilegium vocabulary, version 1.
+#
+# Every term a Florilegium record can carry under the context https://w3id.org/florilegium/ns/v1.jsonld, with what
+# it means. Formal statements are kept few: each one below is relied on by a check. Terms taken from other
+# vocabularies (PROV, Dublin Core, ActivityStreams, Web Annotation) are defined there and are not repeated here.
+#
+# A version of this file does not change once a record names its context. Later terms and axioms go in a later version.
+
+@prefix fl:   <https://w3id.org/florilegium/ns#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/florilegium/ns> a owl:Ontology ;
+    dcterms:title "Florilegium vocabulary" ;
+    owl:versionIRI <https://w3id.org/florilegium/ns/v1.ttl> ;
+    owl:versionInfo "1" ;
+    rdfs:comment "Terms for attributed readings of exact passages, and for the recorded human decisions that give a reading standing." .
+
+# Records and their history.
+
+fl:lineage a owl:ObjectProperty ;
+    rdfs:label "lineage" ;
+    rdfs:comment "The lineage a revision belongs to: every revision of one annotation, or one decision, shares it. It groups revisions and says nothing else about how they relate." .
+
+fl:prev a owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasRevisionOf ;
+    rdfs:label "previous revision" ;
+    rdfs:comment "The revision this one immediately replaces, in the same lineage and the same place. Narrower than prov:wasRevisionOf, which also holds between revisions further apart. Absent on a first revision." .
+
+fl:place a owl:ObjectProperty ;
+    rdfs:label "place" ;
+    rdfs:comment "The place a record was written in: one person's, or one circle's, body of materials, records and decisions." .
+
+fl:protocol a owl:ObjectProperty ;
+    rdfs:label "protocol" ;
+    rdfs:comment "The exact protocol revision in force when the record was written, named by the hash of its bytes." .
+
+fl:state a owl:DatatypeProperty ;
+    rdfs:label "state" ;
+    rdfs:comment "Whether its author still puts this annotation forward: active, or withdrawn. A withdrawal is itself a revision; it does not undo a decision." .
+
+fl:issue a owl:ObjectProperty ;
+    rdfs:label "issue" ;
+    rdfs:comment "The question an annotation answers, named by the lineage that raised it. Annotations on one issue are alternatives to one another. An annotation without it answers its own lineage." .
+
+fl:actingFor a owl:ObjectProperty ;
+    rdfs:label "acting for" ;
+    rdfs:comment "On an annotation made by an assistant: the person on whose behalf it was made. It relates the annotation to that person. In PROV terms the assistant acted on behalf of the person in making it; this property gives the assistant no authority to decide." .
+
+fl:figure a owl:DatatypeProperty ;
+    rdfs:label "figure" ;
+    rdfs:comment "On a target that is a whole figure: the figure's identifier within its representation. A local name, meaningful only beside that representation." .
+
+# Decisions.
+
+fl:Decision a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Decision" ;
+    rdfs:comment "The record of a decision made under a place's protocol by someone authorized to make it. The record is an entity; the act of deciding that produced it is a separate activity, which this record does not name." .
+
+fl:decider a owl:ObjectProperty ;
+    rdfs:label "decider" ;
+    rdfs:comment "The person who made the decision, in the role the rule requires. Always a person; never an assistant." .
+
+fl:effects a owl:ObjectProperty ;
+    rdfs:label "effects" ;
+    rdfs:comment "What a decision does. All of a decision's effects take hold together, or none does." .
+
+fl:act a owl:DatatypeProperty ;
+    rdfs:label "act" ;
+    rdfs:comment "What one effect does: adopt or reject an exact revision for a purpose, or, in a place's first decision, genesis." .
+
+fl:purpose a owl:DatatypeProperty ;
+    rdfs:label "purpose" ;
+    rdfs:comment "The named purpose an effect decides for, as the protocol defines it. Standing for one purpose is not standing for another." .
+
+fl:subject a owl:ObjectProperty ;
+    rdfs:label "subject" ;
+    rdfs:comment "The exact revision something is about: the revision an effect adopts or rejects, an alternative considered, or the claim an evidence assessment assesses. Never a lineage and never 'the latest'." .
+
+fl:ownerActor a owl:ObjectProperty ;
+    rdfs:label "owner" ;
+    rdfs:comment "In a place's first decision: the actor who owns the place. An identity, not a name." .
+
+fl:expects a owl:ObjectProperty ;
+    rdfs:label "expects" ;
+    rdfs:comment "For each question a decision touches, the decision that stood on it when this one was made. A decision is refused if any has changed." .
+
+fl:key a owl:DatatypeProperty ;
+    rdfs:label "key" ;
+    rdfs:comment "The question a decision stands on: an issue together with a purpose." .
+
+fl:head a owl:ObjectProperty ;
+    rdfs:label "head" ;
+    rdfs:comment "The decision that stood on a key, or none." .
+
+fl:rule a owl:DatatypeProperty ;
+    rdfs:label "rule" ;
+    rdfs:comment "The protocol rule the decision was made under, such as owner. It records which rule applied; the software evaluates the rule before it writes the decision." .
+
+fl:members a owl:ObjectProperty ;
+    rdfs:label "members" ;
+    rdfs:comment "Who held the role the rule names at the moment of the decision." .
+
+fl:dissent a owl:ObjectProperty ;
+    rdfs:label "dissent" ;
+    rdfs:comment "Members who recorded disagreement with the decision." .
+
+fl:alternatives a owl:ObjectProperty ;
+    rdfs:label "alternatives" ;
+    rdfs:comment "The other active annotations on the same issue when the decision was made, each by its exact revision." .
+
+fl:dissented a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "dissented" ;
+    rdfs:comment "Whether an alternative's author dissented from the decision." .
+
+fl:rationale a owl:DatatypeProperty ;
+    rdfs:label "rationale" ;
+    rdfs:comment "The decider's stated reason, in their own words. May be empty." .
+
+# What the decider had in front of them.
+
+fl:display a owl:ObjectProperty ;
+    rdfs:label "display" ;
+    rdfs:comment "For each passage or figure a decision rests on, whether the decider's reader displayed it before the decision. It reports display by a reader, and claims neither reading nor understanding." .
+
+fl:representation a owl:ObjectProperty ;
+    rdfs:label "representation" ;
+    rdfs:comment "The exact representation in which something was observed." .
+
+fl:targetDigest a owl:DatatypeProperty ;
+    rdfs:label "target digest" ;
+    rdfs:comment "The SHA-256 of the RFC 8785 form of an annotation's whole target value, binding an observation to that exact target." .
+
+fl:coverage a owl:DatatypeProperty ;
+    rdfs:label "coverage" ;
+    rdfs:comment "How much of a target the reader displayed: full, partial or none; or unknown when nothing was observed." .
+
+fl:method a owl:DatatypeProperty ;
+    rdfs:label "method" ;
+    rdfs:comment "The observation method and its version." .
+
+fl:observedAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "observed at" ;
+    rdfs:comment "When the observation that established the coverage was made. Absent when there was none." .
+
+# Readings of a policy text (the base protocol).
+
+fl:norm a owl:Class ;
+    rdfs:label "Reading" ;
+    rdfs:comment "A reading of a passage as stating a norm: that it obliges, permits or prohibits someone to do something. It is a claim about what the passage says. It does not impose the norm." .
+
+fl:modality a owl:DatatypeProperty ;
+    rdfs:label "modality" ;
+    rdfs:comment "Whether the passage is read as an obligation, a permission or a prohibition." .
+
+fl:actor a owl:DatatypeProperty ;
+    rdfs:label "actor" ;
+    rdfs:comment "Who the norm applies to, in the reader's words. Text, not an identity." .
+
+fl:action a owl:DatatypeProperty ;
+    rdfs:label "action" ;
+    rdfs:comment "What the norm is about doing, in the reader's words." .
+
+fl:condition a owl:DatatypeProperty ;
+    rdfs:label "condition" ;
+    rdfs:comment "When the norm applies, if the passage says." .
+
+fl:exceptions a owl:ObjectProperty ;
+    rdfs:label "exceptions" ;
+    rdfs:comment "The exceptions the passage states, in order." .
+
+# Structures read from figures.
+
+fl:graph a owl:Class ;
+    rdfs:label "Graph" ;
+    rdfs:comment "A figure read as nodes and edges, such as a flowchart. A reading of the figure, saved beside it." .
+
+fl:dataset a owl:Class ;
+    rdfs:label "Dataset" ;
+    rdfs:comment "A figure read as series of values, such as a chart, each value with how it was obtained." .
+
+fl:nodes a owl:DatatypeProperty ; rdfs:label "nodes" ; rdfs:comment "A graph's nodes, kept as written." .
+fl:edges a owl:DatatypeProperty ; rdfs:label "edges" ; rdfs:comment "A graph's edges, kept as written." .
+fl:series a owl:DatatypeProperty ; rdfs:label "series" ; rdfs:comment "The names of a dataset's series." .
+fl:unit a owl:DatatypeProperty ; rdfs:label "unit" ; rdfs:comment "A dataset's unit as the figure gives it, or that it is unknown and why." .
+fl:values a owl:DatatypeProperty ; rdfs:label "values" ; rdfs:comment "A dataset's values, each with its method: read, estimated or calculated." .
+fl:notes a owl:DatatypeProperty ; rdfs:label "notes" ; rdfs:comment "Remarks on a structure, such as what could not be read." .
+
+# The research vocabulary.
+
+fl:claim a owl:Class ;
+    rdfs:label "Claim" ;
+    rdfs:comment "A statement being examined, on the passage from which it was drawn. Saving it does not endorse the source or establish the statement." .
+
+fl:statement a owl:DatatypeProperty ; rdfs:label "statement" ; rdfs:comment "What is claimed, in one sentence." .
+fl:uncertainty a owl:DatatypeProperty ; rdfs:label "uncertainty" ; rdfs:comment "What is not known or not settled about it. Required, so that it is never left unsaid." .
+
+fl:evidence a owl:Class ;
+    rdfs:label "Evidence assessment" ;
+    rdfs:comment "An attributed assessment of how one source passage bears on one exact saved claim revision. The assessment is its author's; it establishes nothing by itself." .
+
+fl:relation a owl:DatatypeProperty ; rdfs:label "relation" ; rdfs:comment "How the passage bears on the claim: supports, challenges or qualifies." .
+fl:reason a owl:DatatypeProperty ; rdfs:label "reason" ; rdfs:comment "Why the assessor says so." .
+fl:limitations a owl:DatatypeProperty ; rdfs:label "limitations" ; rdfs:comment "What limits the assessment." .
+
+# The project-work vocabulary.
+
+fl:commitment a owl:Class ;
+    rdfs:label "Commitment" ;
+    rdfs:comment "A source-reported undertaking by a named party, on the passage that reports it. Keeping or adopting it does not make it a promise by anyone here, or record that it was kept." .
+
+fl:owner a owl:DatatypeProperty ; rdfs:label "owner" ; rdfs:comment "Who the source says undertook it, as a name, or unknown. Text, never an actor identity." .
+fl:item a owl:DatatypeProperty ; rdfs:label "item" ; rdfs:comment "What was undertaken." .
+fl:due a owl:DatatypeProperty ; rdfs:label "due" ; rdfs:comment "The date the source gives, if it gives one as a date." .
+fl:timing a owl:DatatypeProperty ; rdfs:label "timing" ; rdfs:comment "When, in the source's own words." .

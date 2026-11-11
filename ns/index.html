@@ -4,39 +4,135 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Florilegium namespace</title>
-<style>body{font:16px/1.5 system-ui,sans-serif;max-width:42rem;margin:2rem auto;padding:0 1rem}code{font-size:.95em}</style>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:44rem;margin:2rem auto;padding:0 1rem}code{font-size:.95em}dt{margin-top:1rem}dd{margin:0 0 0 1rem}.k{color:#555;font-size:.9em}</style>
 </head>
 <body>
 <h1>Florilegium namespace</h1>
 <p>Namespace IRI: <code>https://w3id.org/florilegium/ns#</code>, conventionally abbreviated <code>fl:</code>.</p>
-<p>Florilegium is a reading workspace whose records are W3C Web Annotations with a few properties of its own.
-This page is where the namespace resolves. The JSON-LD context that defines the short names is a separate,
-versioned document:</p>
+<p>Florilegium is a reading workspace. Its records are W3C Web Annotations on exact passages, and decisions about
+them, in JSON-LD. This page defines the terms of its own that those records use. Terms from PROV, Dublin Core,
+ActivityStreams and the Web Annotation vocabulary are used as those vocabularies define them.</p>
 <ul>
-  <li><a href="v1.jsonld"><code>https://w3id.org/florilegium/ns/v1.jsonld</code></a> (version 1)</li>
+  <li><a href="v1.jsonld"><code>https://w3id.org/florilegium/ns/v1.jsonld</code></a>: the JSON-LD context, version 1</li>
+  <li><a href="v1.ttl"><code>https://w3id.org/florilegium/ns/v1.ttl</code></a>: this vocabulary in Turtle (OWL 2), version 1</li>
 </ul>
-<p>A published context version is not edited. New terms arrive in a new version, so a record keeps the meaning
-it was written with.</p>
-<h2>Terms the version 1 context gives a type or container</h2>
-<p>Other <code>fl:</code> properties expand through the prefix alone, as plain values.</p>
-<ul>
-    <li id="decider"><code>fl:decider</code></li>
-    <li id="edges"><code>fl:edges</code></li>
-    <li id="exceptions"><code>fl:exceptions</code></li>
-    <li id="head"><code>fl:head</code></li>
-    <li id="issue"><code>fl:issue</code></li>
-    <li id="lineage"><code>fl:lineage</code></li>
-    <li id="members"><code>fl:members</code></li>
-    <li id="nodes"><code>fl:nodes</code></li>
-    <li id="place"><code>fl:place</code></li>
-    <li id="prev"><code>fl:prev</code></li>
-    <li id="protocol"><code>fl:protocol</code></li>
-    <li id="representation"><code>fl:representation</code></li>
-    <li id="respondsTo"><code>fl:respondsTo</code></li>
-    <li id="subject"><code>fl:subject</code></li>
-    <li id="unit"><code>fl:unit</code></li>
-    <li id="values"><code>fl:values</code></li>
-</ul>
+<p>A version of either file does not change once a record names it. New or changed terms arrive in a new version,
+so a record keeps the meaning it was written with. Version 1 is a draft until the first record that names it.</p>
+<h2>Terms, version 1</h2>
+<dl>
+  <dt id="lineage"><code>fl:lineage</code> <span class="k">Property, a link: lineage</span></dt>
+  <dd>The lineage a revision belongs to: every revision of one annotation, or one decision, shares it. It groups revisions and says nothing else about how they relate.</dd>
+  <dt id="prev"><code>fl:prev</code> <span class="k">Property, a link: previous revision</span></dt>
+  <dd>The revision this one immediately replaces, in the same lineage and the same place. Narrower than prov:wasRevisionOf, which also holds between revisions further apart. Absent on a first revision. <span class="k">Narrower than <code>http://www.w3.org/ns/prov#wasRevisionOf</code>.</span></dd>
+  <dt id="place"><code>fl:place</code> <span class="k">Property, a link: place</span></dt>
+  <dd>The place a record was written in: one person&#x27;s, or one circle&#x27;s, body of materials, records and decisions.</dd>
+  <dt id="protocol"><code>fl:protocol</code> <span class="k">Property, a link: protocol</span></dt>
+  <dd>The exact protocol revision in force when the record was written, named by the hash of its bytes.</dd>
+  <dt id="state"><code>fl:state</code> <span class="k">Property, a value: state</span></dt>
+  <dd>Whether its author still puts this annotation forward: active, or withdrawn. A withdrawal is itself a revision; it does not undo a decision.</dd>
+  <dt id="issue"><code>fl:issue</code> <span class="k">Property, a link: issue</span></dt>
+  <dd>The question an annotation answers, named by the lineage that raised it. Annotations on one issue are alternatives to one another. An annotation without it answers its own lineage.</dd>
+  <dt id="actingFor"><code>fl:actingFor</code> <span class="k">Property, a link: acting for</span></dt>
+  <dd>On an annotation made by an assistant: the person on whose behalf it was made. It relates the annotation to that person. In PROV terms the assistant acted on behalf of the person in making it; this property gives the assistant no authority to decide.</dd>
+  <dt id="figure"><code>fl:figure</code> <span class="k">Property, a value: figure</span></dt>
+  <dd>On a target that is a whole figure: the figure&#x27;s identifier within its representation. A local name, meaningful only beside that representation.</dd>
+  <dt id="Decision"><code>fl:Decision</code> <span class="k">Class: Decision</span></dt>
+  <dd>The record of a decision made under a place&#x27;s protocol by someone authorized to make it. The record is an entity; the act of deciding that produced it is a separate activity, which this record does not name. <span class="k">Narrower than <code>http://www.w3.org/ns/prov#Entity</code>.</span></dd>
+  <dt id="decider"><code>fl:decider</code> <span class="k">Property, a link: decider</span></dt>
+  <dd>The person who made the decision, in the role the rule requires. Always a person; never an assistant.</dd>
+  <dt id="effects"><code>fl:effects</code> <span class="k">Property, a link: effects</span></dt>
+  <dd>What a decision does. All of a decision&#x27;s effects take hold together, or none does.</dd>
+  <dt id="act"><code>fl:act</code> <span class="k">Property, a value: act</span></dt>
+  <dd>What one effect does: adopt or reject an exact revision for a purpose, or, in a place&#x27;s first decision, genesis.</dd>
+  <dt id="purpose"><code>fl:purpose</code> <span class="k">Property, a value: purpose</span></dt>
+  <dd>The named purpose an effect decides for, as the protocol defines it. Standing for one purpose is not standing for another.</dd>
+  <dt id="subject"><code>fl:subject</code> <span class="k">Property, a link: subject</span></dt>
+  <dd>The exact revision something is about: the revision an effect adopts or rejects, an alternative considered, or the claim an evidence assessment assesses. Never a lineage and never &#x27;the latest&#x27;.</dd>
+  <dt id="ownerActor"><code>fl:ownerActor</code> <span class="k">Property, a link: owner</span></dt>
+  <dd>In a place&#x27;s first decision: the actor who owns the place. An identity, not a name.</dd>
+  <dt id="expects"><code>fl:expects</code> <span class="k">Property, a link: expects</span></dt>
+  <dd>For each question a decision touches, the decision that stood on it when this one was made. A decision is refused if any has changed.</dd>
+  <dt id="key"><code>fl:key</code> <span class="k">Property, a value: key</span></dt>
+  <dd>The question a decision stands on: an issue together with a purpose.</dd>
+  <dt id="head"><code>fl:head</code> <span class="k">Property, a link: head</span></dt>
+  <dd>The decision that stood on a key, or none.</dd>
+  <dt id="rule"><code>fl:rule</code> <span class="k">Property, a value: rule</span></dt>
+  <dd>The protocol rule the decision was made under, such as owner. It records which rule applied; the software evaluates the rule before it writes the decision.</dd>
+  <dt id="members"><code>fl:members</code> <span class="k">Property, a link: members</span></dt>
+  <dd>Who held the role the rule names at the moment of the decision.</dd>
+  <dt id="dissent"><code>fl:dissent</code> <span class="k">Property, a link: dissent</span></dt>
+  <dd>Members who recorded disagreement with the decision.</dd>
+  <dt id="alternatives"><code>fl:alternatives</code> <span class="k">Property, a link: alternatives</span></dt>
+  <dd>The other active annotations on the same issue when the decision was made, each by its exact revision.</dd>
+  <dt id="dissented"><code>fl:dissented</code> <span class="k">Property, a value: dissented</span></dt>
+  <dd>Whether an alternative&#x27;s author dissented from the decision.</dd>
+  <dt id="rationale"><code>fl:rationale</code> <span class="k">Property, a value: rationale</span></dt>
+  <dd>The decider&#x27;s stated reason, in their own words. May be empty.</dd>
+  <dt id="display"><code>fl:display</code> <span class="k">Property, a link: display</span></dt>
+  <dd>For each passage or figure a decision rests on, whether the decider&#x27;s reader displayed it before the decision. It reports display by a reader, and claims neither reading nor understanding.</dd>
+  <dt id="representation"><code>fl:representation</code> <span class="k">Property, a link: representation</span></dt>
+  <dd>The exact representation in which something was observed.</dd>
+  <dt id="targetDigest"><code>fl:targetDigest</code> <span class="k">Property, a value: target digest</span></dt>
+  <dd>The SHA-256 of the RFC 8785 form of an annotation&#x27;s whole target value, binding an observation to that exact target.</dd>
+  <dt id="coverage"><code>fl:coverage</code> <span class="k">Property, a value: coverage</span></dt>
+  <dd>How much of a target the reader displayed: full, partial or none; or unknown when nothing was observed.</dd>
+  <dt id="method"><code>fl:method</code> <span class="k">Property, a value: method</span></dt>
+  <dd>The observation method and its version.</dd>
+  <dt id="observedAt"><code>fl:observedAt</code> <span class="k">Property, a value: observed at</span></dt>
+  <dd>When the observation that established the coverage was made. Absent when there was none.</dd>
+  <dt id="norm"><code>fl:norm</code> <span class="k">Class: Reading</span></dt>
+  <dd>A reading of a passage as stating a norm: that it obliges, permits or prohibits someone to do something. It is a claim about what the passage says. It does not impose the norm.</dd>
+  <dt id="modality"><code>fl:modality</code> <span class="k">Property, a value: modality</span></dt>
+  <dd>Whether the passage is read as an obligation, a permission or a prohibition.</dd>
+  <dt id="actor"><code>fl:actor</code> <span class="k">Property, a value: actor</span></dt>
+  <dd>Who the norm applies to, in the reader&#x27;s words. Text, not an identity.</dd>
+  <dt id="action"><code>fl:action</code> <span class="k">Property, a value: action</span></dt>
+  <dd>What the norm is about doing, in the reader&#x27;s words.</dd>
+  <dt id="condition"><code>fl:condition</code> <span class="k">Property, a value: condition</span></dt>
+  <dd>When the norm applies, if the passage says.</dd>
+  <dt id="exceptions"><code>fl:exceptions</code> <span class="k">Property, a link: exceptions</span></dt>
+  <dd>The exceptions the passage states, in order.</dd>
+  <dt id="graph"><code>fl:graph</code> <span class="k">Class: Graph</span></dt>
+  <dd>A figure read as nodes and edges, such as a flowchart. A reading of the figure, saved beside it.</dd>
+  <dt id="dataset"><code>fl:dataset</code> <span class="k">Class: Dataset</span></dt>
+  <dd>A figure read as series of values, such as a chart, each value with how it was obtained.</dd>
+  <dt id="nodes"><code>fl:nodes</code> <span class="k">Property, a value: nodes</span></dt>
+  <dd>A graph&#x27;s nodes, kept as written.</dd>
+  <dt id="edges"><code>fl:edges</code> <span class="k">Property, a value: edges</span></dt>
+  <dd>A graph&#x27;s edges, kept as written.</dd>
+  <dt id="series"><code>fl:series</code> <span class="k">Property, a value: series</span></dt>
+  <dd>The names of a dataset&#x27;s series.</dd>
+  <dt id="unit"><code>fl:unit</code> <span class="k">Property, a value: unit</span></dt>
+  <dd>A dataset&#x27;s unit as the figure gives it, or that it is unknown and why.</dd>
+  <dt id="values"><code>fl:values</code> <span class="k">Property, a value: values</span></dt>
+  <dd>A dataset&#x27;s values, each with its method: read, estimated or calculated.</dd>
+  <dt id="notes"><code>fl:notes</code> <span class="k">Property, a value: notes</span></dt>
+  <dd>Remarks on a structure, such as what could not be read.</dd>
+  <dt id="claim"><code>fl:claim</code> <span class="k">Class: Claim</span></dt>
+  <dd>A statement being examined, on the passage from which it was drawn. Saving it does not endorse the source or establish the statement.</dd>
+  <dt id="statement"><code>fl:statement</code> <span class="k">Property, a value: statement</span></dt>
+  <dd>What is claimed, in one sentence.</dd>
+  <dt id="uncertainty"><code>fl:uncertainty</code> <span class="k">Property, a value: uncertainty</span></dt>
+  <dd>What is not known or not settled about it. Required, so that it is never left unsaid.</dd>
+  <dt id="evidence"><code>fl:evidence</code> <span class="k">Class: Evidence assessment</span></dt>
+  <dd>An attributed assessment of how one source passage bears on one exact saved claim revision. The assessment is its author&#x27;s; it establishes nothing by itself.</dd>
+  <dt id="relation"><code>fl:relation</code> <span class="k">Property, a value: relation</span></dt>
+  <dd>How the passage bears on the claim: supports, challenges or qualifies.</dd>
+  <dt id="reason"><code>fl:reason</code> <span class="k">Property, a value: reason</span></dt>
+  <dd>Why the assessor says so.</dd>
+  <dt id="limitations"><code>fl:limitations</code> <span class="k">Property, a value: limitations</span></dt>
+  <dd>What limits the assessment.</dd>
+  <dt id="commitment"><code>fl:commitment</code> <span class="k">Class: Commitment</span></dt>
+  <dd>A source-reported undertaking by a named party, on the passage that reports it. Keeping or adopting it does not make it a promise by anyone here, or record that it was kept.</dd>
+  <dt id="owner"><code>fl:owner</code> <span class="k">Property, a value: owner</span></dt>
+  <dd>Who the source says undertook it, as a name, or unknown. Text, never an actor identity.</dd>
+  <dt id="item"><code>fl:item</code> <span class="k">Property, a value: item</span></dt>
+  <dd>What was undertaken.</dd>
+  <dt id="due"><code>fl:due</code> <span class="k">Property, a value: due</span></dt>
+  <dd>The date the source gives, if it gives one as a date.</dd>
+  <dt id="timing"><code>fl:timing</code> <span class="k">Property, a value: timing</span></dt>
+  <dd>When, in the source&#x27;s own words.</dd>
+</dl>
 <p>Maintainer: J.T. Halbert, <a href="https://github.com/jt-halbert">github.com/jt-halbert</a>.</p>
 </body>
 </html>
