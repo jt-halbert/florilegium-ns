@@ -1,0 +1,116 @@
+# Florilegium check vocabulary, version 1 (outcome 010).
+#
+# Terms used only while checking: the category a check targets contribution bodies through, the facts the service
+# states about a captured scope, and what a check declares about itself. None of them is ever written into a record.
+# A fact here describes one captured check; it is rebuilt each time and gives nothing standing.
+#
+# A version of this file does not change once a place's check profile names its bytes.
+
+@prefix chk:  <https://w3id.org/florilegium/check/v1#> .
+@prefix fl:   <https://w3id.org/florilegium/ns#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/florilegium/check/v1> a owl:Ontology ;
+    dcterms:title "Florilegium check vocabulary" ;
+    owl:versionInfo "1" ;
+    rdfs:comment "Derived terms for bounded, advisory checks over a captured scope of one place." .
+
+# The one classification the checks rely on. Each axiom below is named in a report whenever it is the reason a
+# check applied to a record.
+
+chk:Contribution a owl:Class ;
+    rdfs:label "Contribution" ;
+    rdfs:comment "A typed contribution drawn from an exact passage of a retained source: a reading, a claim, an evidence assessment or a commitment." .
+
+fl:norm rdfs:subClassOf chk:Contribution .
+fl:claim rdfs:subClassOf chk:Contribution .
+fl:evidence rdfs:subClassOf chk:Contribution .
+fl:commitment rdfs:subClassOf chk:Contribution .
+
+# The check, and what the service states about its scope.
+
+chk:Check a owl:Class ;
+    rdfs:label "Check" ;
+    rdfs:comment "One captured check: its subject and the date it assumes, if any." .
+
+chk:subject a owl:ObjectProperty ;
+    rdfs:label "subject" ;
+    rdfs:comment "The annotation the check is about: a draft that has not been saved, or one exact saved revision." .
+
+chk:asOf a owl:DatatypeProperty ;
+    rdfs:label "as of" ;
+    rdfs:comment "The calendar date the person chose for date checks. Never today's date by default." .
+
+chk:inScopeAs a owl:ObjectProperty ;
+    rdfs:label "in scope as" ;
+    rdfs:comment "Why a saved revision was captured: it holds standing (chk:Standing), the person selected it for comparison (chk:Selected), or the subject refers to it (chk:Referenced)." .
+
+chk:Standing a owl:NamedIndividual .
+chk:Selected a owl:NamedIndividual .
+chk:Referenced a owl:NamedIndividual .
+
+chk:adoptedFor a owl:DatatypeProperty ;
+    rdfs:label "adopted for" ;
+    rdfs:comment "The exact revision is what the decision now standing on its question adopts, for the named purpose. Stated by the service from the place's decision heads; a later rejection removes it." .
+
+chk:rejectedFor a owl:DatatypeProperty ;
+    rdfs:label "rejected for" ;
+    rdfs:comment "The exact revision is what the decision now standing on its question rejects, for the named purpose." .
+
+chk:otherVersionAdoptedFor a owl:DatatypeProperty ;
+    rdfs:label "other version adopted for" ;
+    rdfs:comment "Another revision of this annotation's lineage, not this one, is adopted for the named purpose." .
+
+chk:alternativeAdoptedFor a owl:DatatypeProperty ;
+    rdfs:label "alternative adopted for" ;
+    rdfs:comment "A different annotation on the same question, not this one, is adopted for the named purpose." .
+
+chk:current a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "current" ;
+    rdfs:comment "Whether this exact revision is its author's current wording. False when newer wording exists." .
+
+chk:authorWithdrew a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "author withdrew" ;
+    rdfs:comment "Whether the author has withdrawn the annotation this revision belongs to. Separate from currency and from standing." .
+
+chk:targetVerified a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "target verified" ;
+    rdfs:comment "Whether the service found the annotation's sources retained in this place with matching digests, and its quoted text at the stated position." .
+
+# What a check declares about itself, on its shape.
+
+chk:code a owl:DatatypeProperty ;
+    rdfs:label "code" ;
+    rdfs:comment "The stable code a finding of this check carries." .
+
+chk:kind a owl:ObjectProperty ;
+    rdfs:label "kind" ;
+    rdfs:comment "chk:Structural: the finding follows from the records alone. chk:Heuristic: a candidate for the person to compare, decided by nothing here." .
+
+chk:Structural a owl:NamedIndividual .
+chk:Heuristic a owl:NamedIndividual .
+
+chk:blocksSaving a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "blocks saving" ;
+    rdfs:comment "Whether the same condition is refused when saving. The check reports it; the refusal is the save path's own." .
+
+chk:aboutValue a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "about value" ;
+    rdfs:comment "On a shape whose focus is a body: the finding is about the annotation reported as its value." .
+
+chk:appliesTo a owl:ObjectProperty ;
+    rdfs:label "applies to" ;
+    rdfs:comment "The body type whose subjects this check examines." .
+
+chk:needsAsOf a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "needs as-of date" ;
+    rdfs:comment "Whether the check runs only when the person has chosen a date." .
