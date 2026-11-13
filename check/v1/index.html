@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Florilegium check vocabulary, version 1</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:44rem;margin:2rem auto;padding:0 1rem}code{font-size:.95em}dt{margin-top:1rem}dd{margin:0 0 0 1rem}.k{color:#555;font-size:.9em}</style>
+</head>
+<body>
+<h1>Florilegium check vocabulary, version 1</h1>
+<p>Namespace IRI: <code>https://w3id.org/florilegium/check/v1#</code>, conventionally abbreviated <code>chk:</code>.</p>
+<p>Florilegium is a reading workspace. It can check a draft or a saved record against what a place already holds.
+This page defines the terms those checks use while they run: the facts the software states about the records it
+captured for one check, and what a check declares about itself. None of these terms is ever written into a record,
+and a check gives nothing standing. The records' own terms are in the <a href="../../ns/">Florilegium namespace</a>.</p>
+<ul>
+  <li><a href="../v1.ttl"><code>https://w3id.org/florilegium/check/v1.ttl</code></a>: this vocabulary in Turtle (OWL 2)</li>
+</ul>
+<p>This version does not change once a place's check profile names its bytes. Changed terms arrive in a new version
+at a new address. Version 1 is a draft until the first kept place that names it.</p>
+<p>The file also states that <code>fl:claim</code>, <code>fl:commitment</code>, <code>fl:evidence</code> and <code>fl:norm</code> are each a kind of
+<code>chk:Contribution</code>. That classification is used only inside a check.</p>
+<h2>Terms</h2>
+<dl>
+  <dt id="Contribution"><code>chk:Contribution</code> <span class="k">Class: Contribution</span></dt>
+  <dd>A typed contribution drawn from an exact passage of a retained source: a reading, a claim, an evidence assessment or a commitment.</dd>
+  <dt id="Check"><code>chk:Check</code> <span class="k">Class: Check</span></dt>
+  <dd>One captured check: its subject and the date it assumes, if any.</dd>
+  <dt id="subject"><code>chk:subject</code> <span class="k">Property, a link: subject</span></dt>
+  <dd>The annotation the check is about: a draft that has not been saved, or one exact saved revision.</dd>
+  <dt id="asOf"><code>chk:asOf</code> <span class="k">Property, a value: as of</span></dt>
+  <dd>The calendar date the person chose for date checks. Never today&#x27;s date by default.</dd>
+  <dt id="inScopeAs"><code>chk:inScopeAs</code> <span class="k">Property, a link: in scope as</span></dt>
+  <dd>Why a saved revision was captured: it holds standing (chk:Standing), the person selected it for comparison (chk:Selected), or the subject refers to it (chk:Referenced).</dd>
+  <dt id="Standing"><code>chk:Standing</code> <span class="k">Named value</span></dt>
+  <dt id="Selected"><code>chk:Selected</code> <span class="k">Named value</span></dt>
+  <dt id="Referenced"><code>chk:Referenced</code> <span class="k">Named value</span></dt>
+  <dt id="adoptedFor"><code>chk:adoptedFor</code> <span class="k">Property, a value: adopted for</span></dt>
+  <dd>The exact revision is what the decision now standing on its question adopts, for the named purpose. Stated by the service from the place&#x27;s decision heads; a later rejection removes it.</dd>
+  <dt id="rejectedFor"><code>chk:rejectedFor</code> <span class="k">Property, a value: rejected for</span></dt>
+  <dd>The exact revision is what the decision now standing on its question rejects, for the named purpose.</dd>
+  <dt id="otherVersionAdoptedFor"><code>chk:otherVersionAdoptedFor</code> <span class="k">Property, a value: other version adopted for</span></dt>
+  <dd>Another revision of this annotation&#x27;s lineage, not this one, is adopted for the named purpose.</dd>
+  <dt id="alternativeAdoptedFor"><code>chk:alternativeAdoptedFor</code> <span class="k">Property, a value: alternative adopted for</span></dt>
+  <dd>A different annotation on the same question, not this one, is adopted for the named purpose.</dd>
+  <dt id="current"><code>chk:current</code> <span class="k">Property, a value: current</span></dt>
+  <dd>Whether this exact revision is its author&#x27;s current wording. False when newer wording exists.</dd>
+  <dt id="authorWithdrew"><code>chk:authorWithdrew</code> <span class="k">Property, a value: author withdrew</span></dt>
+  <dd>Whether the author has withdrawn the annotation this revision belongs to. Separate from currency and from standing.</dd>
+  <dt id="targetVerified"><code>chk:targetVerified</code> <span class="k">Property, a value: target verified</span></dt>
+  <dd>Whether the service found the annotation&#x27;s sources retained in this place with matching digests, and its quoted text at the stated position.</dd>
+  <dt id="code"><code>chk:code</code> <span class="k">Property, a value: code</span></dt>
+  <dd>The stable code a finding of this check carries.</dd>
+  <dt id="kind"><code>chk:kind</code> <span class="k">Property, a link: kind</span></dt>
+  <dd>chk:Structural: the finding follows from the records alone. chk:Heuristic: a candidate for the person to compare, decided by nothing here.</dd>
+  <dt id="Structural"><code>chk:Structural</code> <span class="k">Named value</span></dt>
+  <dt id="Heuristic"><code>chk:Heuristic</code> <span class="k">Named value</span></dt>
+  <dt id="blocksSaving"><code>chk:blocksSaving</code> <span class="k">Property, a value: blocks saving</span></dt>
+  <dd>Whether the same condition is refused when saving. The check reports it; the refusal is the save path&#x27;s own.</dd>
+  <dt id="aboutValue"><code>chk:aboutValue</code> <span class="k">Property, a value: about value</span></dt>
+  <dd>On a shape whose focus is a body: the finding is about the annotation reported as its value.</dd>
+  <dt id="appliesTo"><code>chk:appliesTo</code> <span class="k">Property, a link: applies to</span></dt>
+  <dd>The body type whose subjects this check examines.</dd>
+  <dt id="needsAsOf"><code>chk:needsAsOf</code> <span class="k">Property, a value: needs as-of date</span></dt>
+  <dd>Whether the check runs only when the person has chosen a date.</dd>
+</dl>
+<p>Maintainer: J.T. Halbert, <a href="https://github.com/jt-halbert">github.com/jt-halbert</a>.</p>
+</body>
+</html>
