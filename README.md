@@ -10,6 +10,10 @@ are W3C Web Annotations with a few properties of its own.
 | `https://w3id.org/florilegium/ns/v1.ttl` | The vocabulary in Turtle (OWL 2), version 1: a label and a definition for every term | `ns/v1.ttl` |
 | `https://w3id.org/florilegium/check/v1#` | The namespace of the terms Florilegium's checks use while they run (`chk:`), version 1. Never written into a record | `check/v1/index.html` |
 | `https://w3id.org/florilegium/check/v1.ttl` | That vocabulary in Turtle (OWL 2) | `check/v1.ttl` |
+| `https://w3id.org/florilegium/code/v1#` | The namespace of deterministic code facts extracted by `code-interrogator` (`code:`), version 1 | `code/v1/index.html` |
+| `https://w3id.org/florilegium/code/v1.ttl` | That vocabulary in Turtle (OWL 2) | `code/v1.ttl` |
+| `https://w3id.org/florilegium/code-understanding/v1#` | The namespace of immutable-revision semantic code understanding records (`und:`), version 1 | `code-understanding/v1/index.html` |
+| `https://w3id.org/florilegium/code-understanding/v1.ttl` | That vocabulary in Turtle (OWL 2) | `code-understanding/v1.ttl` |
 | `https://w3id.org/florilegium/id/v1/…` | Identifiers of records in people's own places. Nothing is published at them; `404.html` says so | `404.html` |
 
 The `w3id.org` identifiers are the ones records carry. They redirect to this repository's GitHub Pages site, and

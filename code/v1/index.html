@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Florilegium code vocabulary, version 1</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:44rem;margin:2rem auto;padding:0 1rem}code{font-size:.95em}dt{margin-top:1rem}dd{margin:0 0 0 1rem}.k{color:#555;font-size:.9em}</style>
+</head>
+<body>
+<h1>Florilegium code vocabulary, version 1</h1>
+<p>Namespace IRI: <code>https://w3id.org/florilegium/code/v1#</code>, conventionally abbreviated <code>code:</code>.</p>
+<p><code>code-interrogator</code> is part of the Florilegium ecosystem for strictly read-only, polyglot codebase interrogation. This vocabulary defines the deterministic structural facts extracted statically into the rebuildable <code>urn:ci:extracted</code> and <code>urn:ci:meta</code> Named Graphs (files, symbols, dependency edges, Leiden architectural clusters, and documentation pitfalls). Cumulative semantic notes live in the separate <a href="../../code-understanding/v1/">code-understanding vocabulary</a>.</p>
+<ul>
+  <li><a href="../v1.ttl"><code>https://w3id.org/florilegium/code/v1.ttl</code></a>: this vocabulary in Turtle (OWL 2)</li>
+</ul>
+<p>This version does not change once persisted records or projections name its bytes. Changed terms arrive in a new
+version at a new address. Version 1 is a draft until frozen by its first published release.</p>
+<h2>Terms</h2>
+<dl>
+  <dt id="Symbol"><code>code:Symbol</code> <span class="k">Class: Symbol</span></dt>
+  <dd>A named definition extracted deterministically from a source file (function, method, type, trait, constant, or impl block).</dd>
+  <dt id="File"><code>code:File</code> <span class="k">Class: File</span></dt>
+  <dd>A repository file discovered inside the read-only path jail and indexed by content hash.</dd>
+  <dt id="Cluster"><code>code:Cluster</code> <span class="k">Class: Cluster</span></dt>
+  <dd>An architectural subsystem community discovered by deterministic Leiden clustering over the extracted dependency graph.</dd>
+  <dt id="DocPitfall"><code>code:DocPitfall</code> <span class="k">Class: Documentation pitfall</span></dt>
+  <dd>A stale or broken code/path reference detected mechanically in repository documentation.</dd>
+  <dt id="ExternalDependency"><code>code:ExternalDependency</code> <span class="k">Class: External dependency</span></dt>
+  <dd>A third-party or standard-library target referenced by an internal file or symbol outside the repository.</dd>
+  <dt id="ExtractedEdge"><code>code:ExtractedEdge</code> <span class="k">Class: Extracted edge</span></dt>
+  <dd>A reified dependency edge carrying its source, target, kind, provenance class, and confidence score.</dd>
+  <dt id="Function"><code>code:Function</code> <span class="k">Class: Function</span></dt>
+  <dd>A free or top-level function definition.</dd>
+  <dt id="Method"><code>code:Method</code> <span class="k">Class: Method</span></dt>
+  <dd>A method or constructor associated with a class, struct, receiver, trait, or impl block.</dd>
+  <dt id="Class"><code>code:Class</code> <span class="k">Class: Class</span></dt>
+  <dd>A class or record type definition.</dd>
+  <dt id="Struct"><code>code:Struct</code> <span class="k">Class: Struct</span></dt>
+  <dd>A struct type definition.</dd>
+  <dt id="Interface"><code>code:Interface</code> <span class="k">Class: Interface</span></dt>
+  <dd>An interface type definition.</dd>
+  <dt id="Trait"><code>code:Trait</code> <span class="k">Class: Trait</span></dt>
+  <dd>A trait definition.</dd>
+  <dt id="Enum"><code>code:Enum</code> <span class="k">Class: Enum</span></dt>
+  <dd>An enumeration type definition.</dd>
+  <dt id="Impl"><code>code:Impl</code> <span class="k">Class: Impl</span></dt>
+  <dd>An implementation block attaching methods or trait implementations to a type.</dd>
+  <dt id="TypeAlias"><code>code:TypeAlias</code> <span class="k">Class: Type alias</span></dt>
+  <dd>A type alias or typedef declaration.</dd>
+  <dt id="Constant"><code>code:Constant</code> <span class="k">Class: Constant</span></dt>
+  <dd>A module-level or type-level constant definition.</dd>
+  <dt id="dependsOn"><code>code:dependsOn</code> <span class="k">Property, a link: depends on</span></dt>
+  <dd>Deterministic structural dependency between two repository symbols or files. Materialized for EXTRACTED edges to support native SPARQL property-path traversal.</dd>
+  <dt id="calls"><code>code:calls</code> <span class="k">Property, a link: calls</span></dt>
+  <dd>A deterministic (EXTRACTED) call from one symbol to another internal symbol.</dd>
+  <dt id="callsAmbiguous"><code>code:callsAmbiguous</code> <span class="k">Property, a link: calls (ambiguous)</span></dt>
+  <dd>A heuristic or unresolved (AMBIGUOUS) candidate call edge kept separate from deterministic code:dependsOn closure.</dd>
+  <dt id="ambiguousDependsOn"><code>code:ambiguousDependsOn</code> <span class="k">Property, a link: ambiguous depends on</span></dt>
+  <dd>A non-deterministic (AMBIGUOUS) dependency candidate kept separate from deterministic code:dependsOn closure.</dd>
+  <dt id="importsInternal"><code>code:importsInternal</code> <span class="k">Property, a link: imports internal</span></dt>
+  <dd>An import or include edge targeting another file within the same repository.</dd>
+  <dt id="importsExternal"><code>code:importsExternal</code> <span class="k">Property, a link: imports external</span></dt>
+  <dd>An import or include edge targeting an external library or standard-library package.</dd>
+  <dt id="inherits"><code>code:inherits</code> <span class="k">Property, a link: inherits</span></dt>
+  <dd>An inheritance or extension relationship between types.</dd>
+  <dt id="implements"><code>code:implements</code> <span class="k">Property, a link: implements</span></dt>
+  <dd>An interface or trait implementation relationship.</dd>
+  <dt id="tests"><code>code:tests</code> <span class="k">Property, a link: tests</span></dt>
+  <dd>A static test coverage link from a test symbol or test file to a production symbol or file.</dd>
+  <dt id="defines"><code>code:defines</code> <span class="k">Property, a link: defines</span></dt>
+  <dd>A containment link from a file or scope to a symbol defined within it.</dd>
+  <dt id="referencesSchema"><code>code:referencesSchema</code> <span class="k">Property, a link: references schema</span></dt>
+  <dd>A dependency from code to a schema, migration, or contract definition.</dd>
+  <dt id="inFile"><code>code:inFile</code> <span class="k">Property, a link: in file</span></dt>
+  <dd>The repository file (code:File) in which a symbol or documentation pitfall resides.</dd>
+  <dt id="inCluster"><code>code:inCluster</code> <span class="k">Property, a link: in cluster</span></dt>
+  <dd>The Leiden architectural cluster (code:Cluster) to which a symbol belongs.</dd>
+  <dt id="edgeSource"><code>code:edgeSource</code> <span class="k">Property, a link: edge source</span></dt>
+  <dd>The source node of a reified code:ExtractedEdge.</dd>
+  <dt id="edgeTarget"><code>code:edgeTarget</code> <span class="k">Property, a link: edge target</span></dt>
+  <dd>The target node or external dependency of a reified code:ExtractedEdge.</dd>
+  <dt id="filePath"><code>code:filePath</code> <span class="k">Property, a value: file path</span></dt>
+  <dd>Repository-relative POSIX path of a file or symbol&#x27;s defining file.</dd>
+  <dt id="symbolKey"><code>code:symbolKey</code> <span class="k">Property, a value: symbol key</span></dt>
+  <dd>Stable language-neutral identifier of a symbol (&lt;lang&gt;:&lt;rel_path&gt;::&lt;qualname&gt;).</dd>
+  <dt id="name"><code>code:name</code> <span class="k">Property, a value: name</span></dt>
+  <dd>Short unqualified identifier name of a symbol or external dependency.</dd>
+  <dt id="qualname"><code>code:qualname</code> <span class="k">Property, a value: qualified name</span></dt>
+  <dd>Scope-qualified name of a symbol within its file.</dd>
+  <dt id="kind"><code>code:kind</code> <span class="k">Property, a value: kind</span></dt>
+  <dd>Normalized lowercase symbol kind (function, method, class, struct, interface, trait, enum, impl, type, const) or pitfall kind.</dd>
+  <dt id="language"><code>code:language</code> <span class="k">Property, a value: language</span></dt>
+  <dd>Canonical lowercase programming or markup language name (python, rust, go, typescript, etc.).</dd>
+  <dt id="role"><code>code:role</code> <span class="k">Property, a value: role</span></dt>
+  <dd>Classified repository file role (source, test, docs, config, build, schema, generated).</dd>
+  <dt id="blobHash"><code>code:blobHash</code> <span class="k">Property, a value: blob hash</span></dt>
+  <dd>Content-addressed SHA-256 digest of the file bytes on disk.</dd>
+  <dt id="lineCount"><code>code:lineCount</code> <span class="k">Property, a value: line count</span></dt>
+  <dd>Number of lines in an indexed file.</dd>
+  <dt id="churn90d"><code>code:churn90d</code> <span class="k">Property, a value: 90-day churn</span></dt>
+  <dd>Number of git commits touching the file in the last 90 days.</dd>
+  <dt id="startLine"><code>code:startLine</code> <span class="k">Property, a value: start line</span></dt>
+  <dd>1-based inclusive starting line number of a symbol or pitfall.</dd>
+  <dt id="endLine"><code>code:endLine</code> <span class="k">Property, a value: end line</span></dt>
+  <dd>1-based inclusive ending line number of a symbol.</dd>
+  <dt id="pageRank"><code>code:pageRank</code> <span class="k">Property, a value: PageRank</span></dt>
+  <dd>Deterministic PageRank centrality score computed over EXTRACTED dependency edges.</dd>
+  <dt id="betweenness"><code>code:betweenness</code> <span class="k">Property, a value: betweenness</span></dt>
+  <dd>Brandes betweenness centrality score computed over EXTRACTED dependency edges.</dd>
+  <dt id="inDegree"><code>code:inDegree</code> <span class="k">Property, a value: in-degree</span></dt>
+  <dd>Number of incoming EXTRACTED dependency edges targeting a symbol.</dd>
+  <dt id="outDegree"><code>code:outDegree</code> <span class="k">Property, a value: out-degree</span></dt>
+  <dd>Number of outgoing EXTRACTED dependency edges leaving a symbol.</dd>
+  <dt id="sigHash"><code>code:sigHash</code> <span class="k">Property, a value: signature hash</span></dt>
+  <dd>Normalized AST SHA-256 digest of a symbol&#x27;s signature, used for staleness detection.</dd>
+  <dt id="bodyHash"><code>code:bodyHash</code> <span class="k">Property, a value: body hash</span></dt>
+  <dd>Normalized AST SHA-256 digest of a symbol&#x27;s body, used for staleness detection and relocation.</dd>
+  <dt id="isEntryPoint"><code>code:isEntryPoint</code> <span class="k">Property, a value: is entry point</span></dt>
+  <dd>Whether a symbol is classified as an executable repository entry point.</dd>
+  <dt id="entryRank"><code>code:entryRank</code> <span class="k">Property, a value: entry rank</span></dt>
+  <dd>1-based ranking of an executable entry point by source tier and downstream reachability.</dd>
+  <dt id="clusterId"><code>code:clusterId</code> <span class="k">Property, a value: cluster ID</span></dt>
+  <dd>Stable cluster identifier (e.g. cluster_0).</dd>
+  <dt id="autoLabel"><code>code:autoLabel</code> <span class="k">Property, a value: auto label</span></dt>
+  <dd>Deterministic short label generated from a cluster&#x27;s dominant directory and hub symbols.</dd>
+  <dt id="verifiedTitle"><code>code:verifiedTitle</code> <span class="k">Property, a value: verified title</span></dt>
+  <dd>Human-confirmed title overriding a cluster&#x27;s generated label.</dd>
+  <dt id="algorithm"><code>code:algorithm</code> <span class="k">Property, a value: algorithm</span></dt>
+  <dd>Community detection algorithm identifier (leiden).</dd>
+  <dt id="memberCount"><code>code:memberCount</code> <span class="k">Property, a value: member count</span></dt>
+  <dd>Number of graph nodes assigned to a cluster.</dd>
+  <dt id="cohesionScore"><code>code:cohesionScore</code> <span class="k">Property, a value: cohesion score</span></dt>
+  <dd>Fraction of incident edge weight remaining inside a cluster (0.0 to 1.0).</dd>
+  <dt id="edgeKind"><code>code:edgeKind</code> <span class="k">Property, a value: edge kind</span></dt>
+  <dd>Normalized dependency edge kind on a reified code:ExtractedEdge.</dd>
+  <dt id="provenanceClass"><code>code:provenanceClass</code> <span class="k">Property, a value: provenance class</span></dt>
+  <dd>Epistemic class of an extracted edge (EXTRACTED, INFERRED, or AMBIGUOUS).</dd>
+  <dt id="confidence"><code>code:confidence</code> <span class="k">Property, a value: confidence</span></dt>
+  <dd>Numeric confidence score (0.0 to 1.0) attached to a reified edge.</dd>
+  <dt id="severity"><code>code:severity</code> <span class="k">Property, a value: severity</span></dt>
+  <dd>Severity level reported on a code:DocPitfall (info, warning, error).</dd>
+  <dt id="targetRef"><code>code:targetRef</code> <span class="k">Property, a value: target reference</span></dt>
+  <dd>Unresolved symbol or path token cited by a code:DocPitfall.</dd>
+  <dt id="message"><code>code:message</code> <span class="k">Property, a value: message</span></dt>
+  <dd>Human-readable diagnostic description of a code:DocPitfall.</dd>
+  <dt id="repoType"><code>code:repoType</code> <span class="k">Property, a value: repository type</span></dt>
+  <dd>Inferred software classification of the indexed repository (cli, library, web_service, monorepo, infrastructure, scripts).</dd>
+  <dt id="commitSha"><code>code:commitSha</code> <span class="k">Property, a value: commit SHA</span></dt>
+  <dd>Git HEAD commit SHA recorded for an indexing snapshot.</dd>
+  <dt id="branch"><code>code:branch</code> <span class="k">Property, a value: branch</span></dt>
+  <dd>Git branch name recorded for an indexing snapshot.</dd>
+  <dt id="isDirty"><code>code:isDirty</code> <span class="k">Property, a value: is dirty</span></dt>
+  <dd>Whether the working tree had uncommitted modifications when the snapshot was indexed.</dd>
+</dl>
+<p>Maintainer: J.T. Halbert, <a href="https://github.com/jt-halbert">github.com/jt-halbert</a>.</p>
+</body>
+</html>

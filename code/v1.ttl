@@ -1,0 +1,342 @@
+# Florilegium code-interrogator extracted code vocabulary, version 1.
+#
+# Deterministic structural facts extracted statically from local source repositories
+# (files, symbols, dependency edges, Leiden clusters, documentation pitfalls, and snapshots)
+# into the rebuildable urn:ci:extracted and urn:ci:meta Named Graphs.
+# Strictly separated from cumulative semantic understanding (code-understanding/v1).
+
+@prefix code: <https://w3id.org/florilegium/code/v1#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/florilegium/code/v1> a owl:Ontology ;
+    dcterms:title "Florilegium code vocabulary" ;
+    owl:versionInfo "1" ;
+    rdfs:comment "Deterministic structural code facts (files, symbols, edges, clusters, and pitfalls) extracted statically by code-interrogator." .
+
+code:Symbol a owl:Class ;
+    rdfs:label "Symbol" ;
+    rdfs:comment "A named definition extracted deterministically from a source file (function, method, type, trait, constant, or impl block)." .
+
+code:File a owl:Class ;
+    rdfs:label "File" ;
+    rdfs:comment "A repository file discovered inside the read-only path jail and indexed by content hash." .
+
+code:Cluster a owl:Class ;
+    rdfs:label "Cluster" ;
+    rdfs:comment "An architectural subsystem community discovered by deterministic Leiden clustering over the extracted dependency graph." .
+
+code:DocPitfall a owl:Class ;
+    rdfs:label "Documentation pitfall" ;
+    rdfs:comment "A stale or broken code/path reference detected mechanically in repository documentation." .
+
+code:ExternalDependency a owl:Class ;
+    rdfs:label "External dependency" ;
+    rdfs:comment "A third-party or standard-library target referenced by an internal file or symbol outside the repository." .
+
+code:ExtractedEdge a owl:Class ;
+    rdfs:label "Extracted edge" ;
+    rdfs:comment "A reified dependency edge carrying its source, target, kind, provenance class, and confidence score." .
+
+code:Function a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Function" ;
+    rdfs:comment "A free or top-level function definition." .
+
+code:Method a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Method" ;
+    rdfs:comment "A method or constructor associated with a class, struct, receiver, trait, or impl block." .
+
+code:Class a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Class" ;
+    rdfs:comment "A class or record type definition." .
+
+code:Struct a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Struct" ;
+    rdfs:comment "A struct type definition." .
+
+code:Interface a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Interface" ;
+    rdfs:comment "An interface type definition." .
+
+code:Trait a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Trait" ;
+    rdfs:comment "A trait definition." .
+
+code:Enum a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Enum" ;
+    rdfs:comment "An enumeration type definition." .
+
+code:Impl a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Impl" ;
+    rdfs:comment "An implementation block attaching methods or trait implementations to a type." .
+
+code:TypeAlias a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Type alias" ;
+    rdfs:comment "A type alias or typedef declaration." .
+
+code:Constant a owl:Class ;
+    rdfs:subClassOf code:Symbol ;
+    rdfs:label "Constant" ;
+    rdfs:comment "A module-level or type-level constant definition." .
+
+code:dependsOn a owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:comment "Deterministic structural dependency between two repository symbols or files. Materialized for EXTRACTED edges to support native SPARQL property-path traversal." .
+
+code:calls a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "calls" ;
+    rdfs:comment "A deterministic (EXTRACTED) call from one symbol to another internal symbol." .
+
+code:callsAmbiguous a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:calls ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "calls (ambiguous)" ;
+    rdfs:comment "A heuristic or unresolved (AMBIGUOUS) candidate call edge kept separate from deterministic code:dependsOn closure." .
+
+code:ambiguousDependsOn a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "ambiguous depends on" ;
+    rdfs:comment "A non-deterministic (AMBIGUOUS) dependency candidate kept separate from deterministic code:dependsOn closure." .
+
+code:importsInternal a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "imports internal" ;
+    rdfs:comment "An import or include edge targeting another file within the same repository." .
+
+code:importsExternal a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "imports external" ;
+    rdfs:comment "An import or include edge targeting an external library or standard-library package." .
+
+code:inherits a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "inherits" ;
+    rdfs:comment "An inheritance or extension relationship between types." .
+
+code:implements a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "implements" ;
+    rdfs:comment "An interface or trait implementation relationship." .
+
+code:tests a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "tests" ;
+    rdfs:comment "A static test coverage link from a test symbol or test file to a production symbol or file." .
+
+code:defines a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "defines" ;
+    rdfs:comment "A containment link from a file or scope to a symbol defined within it." .
+
+code:referencesSchema a owl:ObjectProperty ;
+    rdfs:subPropertyOf code:dependsOn ;
+    rdfs:label "references schema" ;
+    rdfs:comment "A dependency from code to a schema, migration, or contract definition." .
+
+code:inFile a owl:ObjectProperty ;
+    rdfs:label "in file" ;
+    rdfs:comment "The repository file (code:File) in which a symbol or documentation pitfall resides." .
+
+code:inCluster a owl:ObjectProperty ;
+    rdfs:label "in cluster" ;
+    rdfs:comment "The Leiden architectural cluster (code:Cluster) to which a symbol belongs." .
+
+code:edgeSource a owl:ObjectProperty ;
+    rdfs:label "edge source" ;
+    rdfs:comment "The source node of a reified code:ExtractedEdge." .
+
+code:edgeTarget a owl:ObjectProperty ;
+    rdfs:label "edge target" ;
+    rdfs:comment "The target node or external dependency of a reified code:ExtractedEdge." .
+
+code:filePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "file path" ;
+    rdfs:comment "Repository-relative POSIX path of a file or symbol's defining file." .
+
+code:symbolKey a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "symbol key" ;
+    rdfs:comment "Stable language-neutral identifier of a symbol (<lang>:<rel_path>::<qualname>)." .
+
+code:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "name" ;
+    rdfs:comment "Short unqualified identifier name of a symbol or external dependency." .
+
+code:qualname a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "qualified name" ;
+    rdfs:comment "Scope-qualified name of a symbol within its file." .
+
+code:kind a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "kind" ;
+    rdfs:comment "Normalized lowercase symbol kind (function, method, class, struct, interface, trait, enum, impl, type, const) or pitfall kind." .
+
+code:language a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "language" ;
+    rdfs:comment "Canonical lowercase programming or markup language name (python, rust, go, typescript, etc.)." .
+
+code:role a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "role" ;
+    rdfs:comment "Classified repository file role (source, test, docs, config, build, schema, generated)." .
+
+code:blobHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "blob hash" ;
+    rdfs:comment "Content-addressed SHA-256 digest of the file bytes on disk." .
+
+code:lineCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "line count" ;
+    rdfs:comment "Number of lines in an indexed file." .
+
+code:churn90d a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "90-day churn" ;
+    rdfs:comment "Number of git commits touching the file in the last 90 days." .
+
+code:startLine a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "start line" ;
+    rdfs:comment "1-based inclusive starting line number of a symbol or pitfall." .
+
+code:endLine a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "end line" ;
+    rdfs:comment "1-based inclusive ending line number of a symbol." .
+
+code:pageRank a owl:DatatypeProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "PageRank" ;
+    rdfs:comment "Deterministic PageRank centrality score computed over EXTRACTED dependency edges." .
+
+code:betweenness a owl:DatatypeProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "betweenness" ;
+    rdfs:comment "Brandes betweenness centrality score computed over EXTRACTED dependency edges." .
+
+code:inDegree a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "in-degree" ;
+    rdfs:comment "Number of incoming EXTRACTED dependency edges targeting a symbol." .
+
+code:outDegree a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "out-degree" ;
+    rdfs:comment "Number of outgoing EXTRACTED dependency edges leaving a symbol." .
+
+code:sigHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "signature hash" ;
+    rdfs:comment "Normalized AST SHA-256 digest of a symbol's signature, used for staleness detection." .
+
+code:bodyHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "body hash" ;
+    rdfs:comment "Normalized AST SHA-256 digest of a symbol's body, used for staleness detection and relocation." .
+
+code:isEntryPoint a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is entry point" ;
+    rdfs:comment "Whether a symbol is classified as an executable repository entry point." .
+
+code:entryRank a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "entry rank" ;
+    rdfs:comment "1-based ranking of an executable entry point by source tier and downstream reachability." .
+
+code:clusterId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "cluster ID" ;
+    rdfs:comment "Stable cluster identifier (e.g. cluster_0)." .
+
+code:autoLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "auto label" ;
+    rdfs:comment "Deterministic short label generated from a cluster's dominant directory and hub symbols." .
+
+code:verifiedTitle a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "verified title" ;
+    rdfs:comment "Human-confirmed title overriding a cluster's generated label." .
+
+code:algorithm a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "algorithm" ;
+    rdfs:comment "Community detection algorithm identifier (leiden)." .
+
+code:memberCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "member count" ;
+    rdfs:comment "Number of graph nodes assigned to a cluster." .
+
+code:cohesionScore a owl:DatatypeProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "cohesion score" ;
+    rdfs:comment "Fraction of incident edge weight remaining inside a cluster (0.0 to 1.0)." .
+
+code:edgeKind a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "edge kind" ;
+    rdfs:comment "Normalized dependency edge kind on a reified code:ExtractedEdge." .
+
+code:provenanceClass a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "provenance class" ;
+    rdfs:comment "Epistemic class of an extracted edge (EXTRACTED, INFERRED, or AMBIGUOUS)." .
+
+code:confidence a owl:DatatypeProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "confidence" ;
+    rdfs:comment "Numeric confidence score (0.0 to 1.0) attached to a reified edge." .
+
+code:severity a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "severity" ;
+    rdfs:comment "Severity level reported on a code:DocPitfall (info, warning, error)." .
+
+code:targetRef a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "target reference" ;
+    rdfs:comment "Unresolved symbol or path token cited by a code:DocPitfall." .
+
+code:message a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "message" ;
+    rdfs:comment "Human-readable diagnostic description of a code:DocPitfall." .
+
+code:repoType a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "repository type" ;
+    rdfs:comment "Inferred software classification of the indexed repository (cli, library, web_service, monorepo, infrastructure, scripts)." .
+
+code:commitSha a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "commit SHA" ;
+    rdfs:comment "Git HEAD commit SHA recorded for an indexing snapshot." .
+
+code:branch a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "branch" ;
+    rdfs:comment "Git branch name recorded for an indexing snapshot." .
+
+code:isDirty a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is dirty" ;
+    rdfs:comment "Whether the working tree had uncommitted modifications when the snapshot was indexed." .

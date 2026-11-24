@@ -1,0 +1,243 @@
+# Florilegium code-interrogator code-understanding vocabulary, version 1.
+#
+# Cumulative, immutable-revision semantic understanding records, human verification standing,
+# content-addressed code anchors, staleness states, and cross-record links stored in the
+# append-only urn:ci:understanding Named Graph.
+# Strictly separated from rebuildable extracted code facts (code/v1).
+
+@prefix und: <https://w3id.org/florilegium/code-understanding/v1#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/florilegium/code-understanding/v1> a owl:Ontology ;
+    dcterms:title "Florilegium code-understanding vocabulary" ;
+    owl:versionInfo "1" ;
+    rdfs:comment "Immutable-revision semantic understanding records, human verification standing, and hash-anchored staleness links for code-interrogator." .
+
+und:UnderstandingRecord a owl:Class ;
+    rdfs:label "Understanding record" ;
+    rdfs:comment "A durable lineage of cumulative semantic understanding about a codebase, pointing to its current immutable revision." .
+
+und:UnderstandingRevision a owl:Class ;
+    rdfs:label "Understanding revision" ;
+    rdfs:comment "One immutable revision of an understanding record, carrying its standing status, summary, Markdown body, provenance, and code anchors." .
+
+und:Anchor a owl:Class ;
+    rdfs:label "Anchor" ;
+    rdfs:comment "A content-addressed link tying an understanding revision to a repository, cluster, file, symbol, or line range with exact hashes for mechanical staleness detection." .
+
+und:SubsystemSummary a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Subsystem summary" ;
+    rdfs:comment "An understanding revision describing the responsibility and boundaries of a subsystem or cluster." .
+
+und:ArchitecturalDecision a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Architectural decision" ;
+    rdfs:comment "An understanding revision recording why a design choice was made and what trade-offs it entails." .
+
+und:Invariant a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Invariant" ;
+    rdfs:comment "An understanding revision stating a rule or constraint that must always hold in the codebase." .
+
+und:DataFlow a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Data flow" ;
+    rdfs:comment "An understanding revision tracing how data or control flows across components." .
+
+und:Gotcha a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Gotcha" ;
+    rdfs:comment "An understanding revision warning about subtle behavior, edge cases, or pitfalls." .
+
+und:EntryPointGuide a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Entry-point guide" ;
+    rdfs:comment "An understanding revision explaining how execution enters and boots the system." .
+
+und:GlossaryTerm a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Glossary term" ;
+    rdfs:comment "An understanding revision defining domain terminology used in the codebase." .
+
+und:OpenQuestion a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "Open question" ;
+    rdfs:comment "An understanding revision capturing an unresolved ambiguity or question for future investigation." .
+
+und:ExternalContext a owl:Class ;
+    rdfs:subClassOf und:UnderstandingRevision ;
+    rdfs:label "External context" ;
+    rdfs:comment "An understanding revision recording outside constraints, upstream dependencies, or operational context not visible in source bytes alone." .
+
+und:RepoAnchor a owl:Class ;
+    rdfs:subClassOf und:Anchor ;
+    rdfs:label "Repository anchor" ;
+    rdfs:comment "An anchor scoping an understanding revision to the repository as a whole." .
+
+und:ClusterAnchor a owl:Class ;
+    rdfs:subClassOf und:Anchor ;
+    rdfs:label "Cluster anchor" ;
+    rdfs:comment "An anchor binding an understanding revision to a Leiden code:Cluster." .
+
+und:FileAnchor a owl:Class ;
+    rdfs:subClassOf und:Anchor ;
+    rdfs:label "File anchor" ;
+    rdfs:comment "An anchor binding an understanding revision to a code:File and its blob SHA-256 digest." .
+
+und:SymbolAnchor a owl:Class ;
+    rdfs:subClassOf und:Anchor ;
+    rdfs:label "Symbol anchor" ;
+    rdfs:comment "An anchor binding an understanding revision to a code:Symbol with exact signature and body AST hashes." .
+
+und:LineRangeAnchor a owl:Class ;
+    rdfs:subClassOf und:Anchor ;
+    rdfs:label "Line-range anchor" ;
+    rdfs:comment "An anchor binding an understanding revision to a specific line span inside a code:File." .
+
+und:currentRevision a owl:ObjectProperty ;
+    rdfs:label "current revision" ;
+    rdfs:comment "Links an und:UnderstandingRecord to its latest immutable und:UnderstandingRevision." .
+
+und:record a owl:ObjectProperty ;
+    rdfs:label "record" ;
+    rdfs:comment "Links an und:UnderstandingRevision back to its owning und:UnderstandingRecord." .
+
+und:prevRevision a owl:ObjectProperty ;
+    rdfs:label "previous revision" ;
+    rdfs:comment "Links an und:UnderstandingRevision to the immediately preceding revision in its append-only history chain." .
+
+und:hasAnchor a owl:ObjectProperty ;
+    rdfs:label "has anchor" ;
+    rdfs:comment "Links an und:UnderstandingRevision to one of its content-addressed und:Anchor nodes." .
+
+und:target a owl:ObjectProperty ;
+    rdfs:label "target" ;
+    rdfs:comment "Links an und:Anchor to the extracted code:Symbol, code:File, or code:Cluster IRI it grounds." .
+
+und:explains a owl:ObjectProperty ;
+    rdfs:label "explains" ;
+    rdfs:comment "Indicates that one understanding record explains another record or topic." .
+
+und:dependsOn a owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:comment "Indicates that one understanding record depends on another record's premise or decision." .
+
+und:contradicts a owl:ObjectProperty ;
+    rdfs:label "contradicts" ;
+    rdfs:comment "Indicates that one understanding record conflicts with or challenges another record." .
+
+und:refines a owl:ObjectProperty ;
+    rdfs:label "refines" ;
+    rdfs:comment "Indicates that one understanding record narrows or adds detail to another record." .
+
+und:supersedes a owl:ObjectProperty ;
+    rdfs:label "supersedes" ;
+    rdfs:comment "Indicates that one understanding record replaces an earlier record." .
+
+und:appliesTo a owl:ObjectProperty ;
+    rdfs:label "applies to" ;
+    rdfs:comment "Indicates that an understanding record applies to a broader record, subsystem, or invariant." .
+
+und:recordId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "record ID" ;
+    rdfs:comment "Stable UUIDv7 identifier of an und:UnderstandingRecord." .
+
+und:revisionId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "revision ID" ;
+    rdfs:comment "Stable UUIDv7 identifier of an immutable und:UnderstandingRevision." .
+
+und:kind a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "kind" ;
+    rdfs:comment "Normalized understanding record kind (subsystem_summary, architectural_decision, invariant, data_flow, gotcha, entry_point_guide, glossary_term, open_question, external_context)." .
+
+und:status a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "status" ;
+    rdfs:comment "Explicit verification standing of a revision: draft, verified, contested, or superseded." .
+
+und:summary a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "summary" ;
+    rdfs:comment "Concise single-paragraph summary of an understanding revision." .
+
+und:bodyMd a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "body (Markdown)" ;
+    rdfs:comment "Full Markdown body of an understanding revision." .
+
+und:confidence a owl:DatatypeProperty ;
+    rdfs:range xsd:double ;
+    rdfs:label "confidence" ;
+    rdfs:comment "Author-supplied confidence score (0.0 to 1.0) on an understanding revision." .
+
+und:verifiedBy a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "verified by" ;
+    rdfs:comment "Explicit authority that promoted a revision to verified (chat_confirmed or cli)." .
+
+und:verifiedAt a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "verified at" ;
+    rdfs:comment "RFC 3339 UTC timestamp when the revision was promoted to verified." .
+
+und:commitShaAtWrite a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "commit SHA at write" ;
+    rdfs:comment "Git HEAD commit SHA observed when the revision was written." .
+
+und:freshness a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "freshness" ;
+    rdfs:comment "Mechanical staleness state of an anchor: fresh, relocated, stale_body, stale_signature, or orphaned." .
+
+und:isEffectiveFresh a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is effectively fresh" ;
+    rdfs:comment "Whether an anchor is fresh or cleanly auto-relocated with intact signature and body hashes." .
+
+und:anchoredCommit a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "anchored commit" ;
+    rdfs:comment "Git HEAD commit SHA recorded on an und:Anchor when captured." .
+
+und:anchoredBlobHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "anchored blob hash" ;
+    rdfs:comment "File blob SHA-256 recorded on an und:Anchor." .
+
+und:anchoredSigHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "anchored signature hash" ;
+    rdfs:comment "Normalized symbol signature SHA-256 recorded on an und:Anchor." .
+
+und:anchoredBodyHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "anchored body hash" ;
+    rdfs:comment "Normalized symbol body SHA-256 recorded on an und:Anchor." .
+
+und:driftSummary a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "drift summary" ;
+    rdfs:comment "Human-readable explanation of how the anchored code changed relative to its stored hashes." .
+
+und:filePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "file path" ;
+    rdfs:comment "Repository-relative POSIX path recorded on an und:Anchor." .
+
+und:symbolKey a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "symbol key" ;
+    rdfs:comment "Symbol key recorded on an und:Anchor." .
+
+und:clusterId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "cluster ID" ;
+    rdfs:comment "Cluster ID recorded on an und:Anchor." .
