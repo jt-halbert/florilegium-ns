@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Florilegium code-understanding vocabulary, version 1</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:44rem;margin:2rem auto;padding:0 1rem}code{font-size:.95em}dt{margin-top:1rem}dd{margin:0 0 0 1rem}.k{color:#555;font-size:.9em}</style>
+</head>
+<body>
+<h1>Florilegium code-understanding vocabulary, version 1</h1>
+<p>Namespace IRI: <code>https://w3id.org/florilegium/code-understanding/v1#</code>, conventionally abbreviated <code>und:</code>.</p>
+<p><code>code-interrogator</code> separates rebuildable structural facts (<a href="../../code/v1/"><code>code:</code></a>) from cumulative semantic understanding. This vocabulary defines the append-only understanding records, immutable revisions, explicit human verification standing (<code>draft</code> vs. <code>verified</code>), content-addressed anchors (<code>blobHash</code>, <code>sigHash</code>, <code>bodyHash</code>), and cross-record links stored in the <code>urn:ci:understanding</code> Named Graph.</p>
+<ul>
+  <li><a href="../v1.ttl"><code>https://w3id.org/florilegium/code-understanding/v1.ttl</code></a>: this vocabulary in Turtle (OWL 2)</li>
+</ul>
+<p>This version does not change once persisted records or projections name its bytes. Changed terms arrive in a new
+version at a new address. Version 1 is a draft until frozen by its first published release.</p>
+<h2>Terms</h2>
+<dl>
+  <dt id="UnderstandingRecord"><code>und:UnderstandingRecord</code> <span class="k">Class: Understanding record</span></dt>
+  <dd>A durable lineage of cumulative semantic understanding about a codebase, pointing to its current immutable revision.</dd>
+  <dt id="UnderstandingRevision"><code>und:UnderstandingRevision</code> <span class="k">Class: Understanding revision</span></dt>
+  <dd>One immutable revision of an understanding record, carrying its standing status, summary, Markdown body, provenance, and code anchors.</dd>
+  <dt id="Anchor"><code>und:Anchor</code> <span class="k">Class: Anchor</span></dt>
+  <dd>A content-addressed link tying an understanding revision to a repository, cluster, file, symbol, or line range with exact hashes for mechanical staleness detection.</dd>
+  <dt id="SubsystemSummary"><code>und:SubsystemSummary</code> <span class="k">Class: Subsystem summary</span></dt>
+  <dd>An understanding revision describing the responsibility and boundaries of a subsystem or cluster.</dd>
+  <dt id="ArchitecturalDecision"><code>und:ArchitecturalDecision</code> <span class="k">Class: Architectural decision</span></dt>
+  <dd>An understanding revision recording why a design choice was made and what trade-offs it entails.</dd>
+  <dt id="Invariant"><code>und:Invariant</code> <span class="k">Class: Invariant</span></dt>
+  <dd>An understanding revision stating a rule or constraint that must always hold in the codebase.</dd>
+  <dt id="DataFlow"><code>und:DataFlow</code> <span class="k">Class: Data flow</span></dt>
+  <dd>An understanding revision tracing how data or control flows across components.</dd>
+  <dt id="Gotcha"><code>und:Gotcha</code> <span class="k">Class: Gotcha</span></dt>
+  <dd>An understanding revision warning about subtle behavior, edge cases, or pitfalls.</dd>
+  <dt id="EntryPointGuide"><code>und:EntryPointGuide</code> <span class="k">Class: Entry-point guide</span></dt>
+  <dd>An understanding revision explaining how execution enters and boots the system.</dd>
+  <dt id="GlossaryTerm"><code>und:GlossaryTerm</code> <span class="k">Class: Glossary term</span></dt>
+  <dd>An understanding revision defining domain terminology used in the codebase.</dd>
+  <dt id="OpenQuestion"><code>und:OpenQuestion</code> <span class="k">Class: Open question</span></dt>
+  <dd>An understanding revision capturing an unresolved ambiguity or question for future investigation.</dd>
+  <dt id="ExternalContext"><code>und:ExternalContext</code> <span class="k">Class: External context</span></dt>
+  <dd>An understanding revision recording outside constraints, upstream dependencies, or operational context not visible in source bytes alone.</dd>
+  <dt id="RepoAnchor"><code>und:RepoAnchor</code> <span class="k">Class: Repository anchor</span></dt>
+  <dd>An anchor scoping an understanding revision to the repository as a whole.</dd>
+  <dt id="ClusterAnchor"><code>und:ClusterAnchor</code> <span class="k">Class: Cluster anchor</span></dt>
+  <dd>An anchor binding an understanding revision to a Leiden code:Cluster.</dd>
+  <dt id="FileAnchor"><code>und:FileAnchor</code> <span class="k">Class: File anchor</span></dt>
+  <dd>An anchor binding an understanding revision to a code:File and its blob SHA-256 digest.</dd>
+  <dt id="SymbolAnchor"><code>und:SymbolAnchor</code> <span class="k">Class: Symbol anchor</span></dt>
+  <dd>An anchor binding an understanding revision to a code:Symbol with exact signature and body AST hashes.</dd>
+  <dt id="LineRangeAnchor"><code>und:LineRangeAnchor</code> <span class="k">Class: Line-range anchor</span></dt>
+  <dd>An anchor binding an understanding revision to a specific line span inside a code:File.</dd>
+  <dt id="currentRevision"><code>und:currentRevision</code> <span class="k">Property, a link: current revision</span></dt>
+  <dd>Links an und:UnderstandingRecord to its latest immutable und:UnderstandingRevision.</dd>
+  <dt id="record"><code>und:record</code> <span class="k">Property, a link: record</span></dt>
+  <dd>Links an und:UnderstandingRevision back to its owning und:UnderstandingRecord.</dd>
+  <dt id="prevRevision"><code>und:prevRevision</code> <span class="k">Property, a link: previous revision</span></dt>
+  <dd>Links an und:UnderstandingRevision to the immediately preceding revision in its append-only history chain.</dd>
+  <dt id="hasAnchor"><code>und:hasAnchor</code> <span class="k">Property, a link: has anchor</span></dt>
+  <dd>Links an und:UnderstandingRevision to one of its content-addressed und:Anchor nodes.</dd>
+  <dt id="target"><code>und:target</code> <span class="k">Property, a link: target</span></dt>
+  <dd>Links an und:Anchor to the extracted code:Symbol, code:File, or code:Cluster IRI it grounds.</dd>
+  <dt id="explains"><code>und:explains</code> <span class="k">Property, a link: explains</span></dt>
+  <dd>Indicates that one understanding record explains another record or topic.</dd>
+  <dt id="dependsOn"><code>und:dependsOn</code> <span class="k">Property, a link: depends on</span></dt>
+  <dd>Indicates that one understanding record depends on another record&#x27;s premise or decision.</dd>
+  <dt id="contradicts"><code>und:contradicts</code> <span class="k">Property, a link: contradicts</span></dt>
+  <dd>Indicates that one understanding record conflicts with or challenges another record.</dd>
+  <dt id="refines"><code>und:refines</code> <span class="k">Property, a link: refines</span></dt>
+  <dd>Indicates that one understanding record narrows or adds detail to another record.</dd>
+  <dt id="supersedes"><code>und:supersedes</code> <span class="k">Property, a link: supersedes</span></dt>
+  <dd>Indicates that one understanding record replaces an earlier record.</dd>
+  <dt id="appliesTo"><code>und:appliesTo</code> <span class="k">Property, a link: applies to</span></dt>
+  <dd>Indicates that an understanding record applies to a broader record, subsystem, or invariant.</dd>
+  <dt id="recordId"><code>und:recordId</code> <span class="k">Property, a value: record ID</span></dt>
+  <dd>Stable UUIDv7 identifier of an und:UnderstandingRecord.</dd>
+  <dt id="revisionId"><code>und:revisionId</code> <span class="k">Property, a value: revision ID</span></dt>
+  <dd>Stable UUIDv7 identifier of an immutable und:UnderstandingRevision.</dd>
+  <dt id="kind"><code>und:kind</code> <span class="k">Property, a value: kind</span></dt>
+  <dd>Normalized understanding record kind (subsystem_summary, architectural_decision, invariant, data_flow, gotcha, entry_point_guide, glossary_term, open_question, external_context).</dd>
+  <dt id="status"><code>und:status</code> <span class="k">Property, a value: status</span></dt>
+  <dd>Explicit verification standing of a revision: draft, verified, contested, or superseded.</dd>
+  <dt id="summary"><code>und:summary</code> <span class="k">Property, a value: summary</span></dt>
+  <dd>Concise single-paragraph summary of an understanding revision.</dd>
+  <dt id="bodyMd"><code>und:bodyMd</code> <span class="k">Property, a value: body (Markdown)</span></dt>
+  <dd>Full Markdown body of an understanding revision.</dd>
+  <dt id="confidence"><code>und:confidence</code> <span class="k">Property, a value: confidence</span></dt>
+  <dd>Author-supplied confidence score (0.0 to 1.0) on an understanding revision.</dd>
+  <dt id="verifiedBy"><code>und:verifiedBy</code> <span class="k">Property, a value: verified by</span></dt>
+  <dd>Explicit authority that promoted a revision to verified (chat_confirmed or cli).</dd>
+  <dt id="verifiedAt"><code>und:verifiedAt</code> <span class="k">Property, a value: verified at</span></dt>
+  <dd>RFC 3339 UTC timestamp when the revision was promoted to verified.</dd>
+  <dt id="commitShaAtWrite"><code>und:commitShaAtWrite</code> <span class="k">Property, a value: commit SHA at write</span></dt>
+  <dd>Git HEAD commit SHA observed when the revision was written.</dd>
+  <dt id="freshness"><code>und:freshness</code> <span class="k">Property, a value: freshness</span></dt>
+  <dd>Mechanical staleness state of an anchor: fresh, relocated, stale_body, stale_signature, or orphaned.</dd>
+  <dt id="isEffectiveFresh"><code>und:isEffectiveFresh</code> <span class="k">Property, a value: is effectively fresh</span></dt>
+  <dd>Whether an anchor is fresh or cleanly auto-relocated with intact signature and body hashes.</dd>
+  <dt id="anchoredCommit"><code>und:anchoredCommit</code> <span class="k">Property, a value: anchored commit</span></dt>
+  <dd>Git HEAD commit SHA recorded on an und:Anchor when captured.</dd>
+  <dt id="anchoredBlobHash"><code>und:anchoredBlobHash</code> <span class="k">Property, a value: anchored blob hash</span></dt>
+  <dd>File blob SHA-256 recorded on an und:Anchor.</dd>
+  <dt id="anchoredSigHash"><code>und:anchoredSigHash</code> <span class="k">Property, a value: anchored signature hash</span></dt>
+  <dd>Normalized symbol signature SHA-256 recorded on an und:Anchor.</dd>
+  <dt id="anchoredBodyHash"><code>und:anchoredBodyHash</code> <span class="k">Property, a value: anchored body hash</span></dt>
+  <dd>Normalized symbol body SHA-256 recorded on an und:Anchor.</dd>
+  <dt id="driftSummary"><code>und:driftSummary</code> <span class="k">Property, a value: drift summary</span></dt>
+  <dd>Human-readable explanation of how the anchored code changed relative to its stored hashes.</dd>
+  <dt id="filePath"><code>und:filePath</code> <span class="k">Property, a value: file path</span></dt>
+  <dd>Repository-relative POSIX path recorded on an und:Anchor.</dd>
+  <dt id="symbolKey"><code>und:symbolKey</code> <span class="k">Property, a value: symbol key</span></dt>
+  <dd>Symbol key recorded on an und:Anchor.</dd>
+  <dt id="clusterId"><code>und:clusterId</code> <span class="k">Property, a value: cluster ID</span></dt>
+  <dd>Cluster ID recorded on an und:Anchor.</dd>
+</dl>
+<p>Maintainer: J.T. Halbert, <a href="https://github.com/jt-halbert">github.com/jt-halbert</a>.</p>
+</body>
+</html>
